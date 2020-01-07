@@ -16,40 +16,50 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
   </head>
-  <body>
+  <body style="background-color: window">
     <div class="container">
 
       <br>
-      <h1>Productos</h1>
+      <h1 class="display-4">Mantenimiento de Productos</h1>
+      <br>
       <form>     
         <div class="row">
           <div class="col-6">
-            <input class="form-control" type="search" placeholder="Producto" aria-label="Search" name="txtproducto">
+            <input class="form-control" type="search" placeholder="Ingrese Producto" aria-label="Search" name="txtproducto">
           </div>
           <div class="col-6">
             <button class="btn btn-outline-success" type="submit" name="accion" value="buscar">Buscar</button>
           </div>
         </div>        
       </form>
-  
+
       <br>
-      <table class="table table-dark">
+      <table class="table table-striped table-dark">
         <thead>
           <tr>
-            <th scope="col">ID</th>
-            <th scope="col">NOMBRE</th>
-            <th scope="col">PRODUCCIÓN</th>
-            <th scope="col">VENCIMIENTO</th>
-            <th scope="col">PRECIO</th>
-            <th scope="col">STOCK</th>
-            <th>ACCIONES</th>
+            <th scope="col" class="lead">ID</th>
+            <th scope="col" class="lead">NOMBRE</th>
+            <th scope="col" class="lead">PRODUCCIÓN</th>
+            <th scope="col" class="lead">VENCIMIENTO</th>
+            <th scope="col" class="lead">PRECIO</th>
+            <th scope="col" class="lead">STOCK</th>
+            <th scope="col" class="lead">ACCIONES</th>
           </tr>
         </thead>
         <%
+          String dato = request.getParameter("txtproducto");
           ProductoDAO dao = new ProductoDAO();
-          List<Producto> list = dao.listar();
-          Iterator<Producto> iter = list.iterator();
+          List<Producto> list;
+          Iterator<Producto> iter;
+          if (dato != null) {
+            list = dao.buscarProducto(dato);
+          } else {
+            list = dao.listar();
+          }
+
+          iter = list.iterator();
           Producto pro = null;
+
           while (iter.hasNext()) {
             pro = iter.next();
 
@@ -63,12 +73,13 @@
             <td><%= pro.getPrecio()%></td>
             <td><%= pro.getStock()%></td>
             <td>
-              <button type="button" class="btn btn-outline-danger">Eliminar</button>
-              <button type="button" class="btn btn-outline-warning">Editar</button>
-              <button type="button" class="btn btn-outline-info">Detalles</button>
+              <button type="button" class="btn btn-outline-danger m-1">Eliminar</button>
+              <button type="button" class="btn btn-outline-warning m-1">Editar</button>
+              <button type="button" class="btn btn-outline-info m-1">Detalles</button>
             </td>
           </tr>   
           <%
+
             }
           %>
         </tbody>

@@ -36,10 +36,42 @@ public class ProductoDAO implements CrudInterface {
         p.setStock(rs.getInt("stock"));
         list.add(p);
       }
+      rs.close();
+      pst.close();
+      con.close();
     } catch (Exception e) {
     }
     return list;
 
+  }
+
+  @Override
+  public List buscarProducto(String txtProducto) {
+
+    System.out.println("Salida : " + txtProducto);
+    List<Producto> lista = new ArrayList<>();
+    String sql = "SELECT * FROM producto WHERE CONCAT(nombre, id) LIKE '%" + txtProducto + "%'";
+    try {
+      con = condb.getConnection();
+      pst = con.prepareStatement(sql);
+      //pst.setString(1, txtProducto.trim());
+      rs = pst.executeQuery();
+      while (rs.next()) {
+        Producto p = new Producto();
+        p.setId(rs.getInt("id"));
+        p.setNombre(rs.getString("nombre"));
+        p.setF_produccion(rs.getString("f_produccion"));
+        p.setF_vencimiento(rs.getString("f_vencimiento"));
+        p.setPrecio(rs.getDouble("precio"));
+        p.setStock(rs.getInt("stock"));
+        lista.add(p);
+      }
+      rs.close();
+      pst.close();
+      con.close();
+    } catch (Exception e) {
+    }
+    return lista;
   }
 
   @Override
@@ -60,31 +92,6 @@ public class ProductoDAO implements CrudInterface {
   @Override
   public boolean delete(int id) {
     throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-  }
-
-  @Override
-  public List buscarProducto(String txtProducto) {
-
-    List<Producto> lista = new ArrayList<>();
-    String sql = "SELECT * FROM producto WHERE id LIKE '%"+txtProducto+"%'";
-    try {
-      con = condb.getConnection();
-      pst = con.prepareStatement(sql);
-      rs = pst.executeQuery();
-      while (rs.next()) {
-        Producto p = new Producto();
-        p.setId(rs.getInt("id"));
-        p.setNombre(rs.getString("nombre"));
-        p.setF_produccion(rs.getString("f_produccion"));
-        p.setF_vencimiento(rs.getString("f_vencimiento"));
-        p.setPrecio(rs.getDouble("precio"));
-        p.setStock(rs.getInt("stock"));
-        lista.add(p);
-      }
-    } catch (Exception e) {
-    }
-
-    return lista;
   }
 
 }

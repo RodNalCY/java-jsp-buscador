@@ -55,11 +55,7 @@ public class Controlador extends HttpServlet {
       acceso=listar;
     }
     if (action.equalsIgnoreCase("buscar")) {
-      String txtCodigo = request.getParameter("txtproducto");
-      System.out.println("COD: "+txtCodigo);
-      ProductoDAO dao = new ProductoDAO();
-      dao.buscarProducto(txtCodigo);
-      //acceso=listar;
+      acceso=listar;
     }
     RequestDispatcher vista = request.getRequestDispatcher(acceso);
     vista.forward(request, response);
